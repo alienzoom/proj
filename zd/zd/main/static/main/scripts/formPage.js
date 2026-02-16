@@ -1,38 +1,6 @@
-console.log("dropdown.js executed");
-
-const regBtn = document.querySelector(".header-right-profile-button");
-const mainContent = document.querySelector(".switch-content");
-const formPage = document.querySelector(".formPage");
-const header = document.querySelector(".header");
-
-const requestButton = document.querySelector(".req-btn");
-
-header.addEventListener("click", (e) => {
-    if (e.target.classList.contains("header-left-logo") || e.target.classList.contains("header-right-profile-logo")) {
-        if (formPage.classList.contains("active")) {
-            formPage.classList.remove("active");
-            formPage.style.display = "none";
-            mainContent.style.display = "block";
-        }
-    }
-});
-
-header.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    if ((e.target === regBtn || e.target === requestButton) && !formPage.classList.contains("active")) {
-        formPage.classList.add("active");
-        mainContent.style.display = "none";
-        formPage.style.display = "grid";
-    } else {
-        formPage.classList.remove("active");
-        formPage.style.display = "none";
-        mainContent.style.display = "block";
-    }
-});
-
 ///////////////////////////////
 //// ВОЙТИ - ЗАРЕГИСТРИРОВАТЬСЯ-ЗАЯВКИ
+const header = document.querySelector(".header");
 const signIn = document.querySelector(".sign-in");
 const signUp = document.querySelector(".sign-up");
 
@@ -41,25 +9,34 @@ const signUpForm = document.querySelector(".form-sign-up");
 
 const requestContent = document.querySelector(".request-form");
 const regContent = document.querySelector(".reg-form");
-// const regBlock = document.querySelector(".formPage-block");
+
+const requestButton = document.querySelector('.req-btn')
+const regButton = document.querySelector(".header-right-profile-button");
 
 signUpForm.style.display = "none";
 requestContent.style.display = "none";
 
-header.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    if (e.target === requestButton) {
-        requestContent.style.display = "grid";
-        regContent.style.display = "none";
-    } else if (e.target === regBtn) {
-        requestContent.style.display = "none";
-        regContent.style.display = "grid";
+document.addEventListener('DOMContentLoaded', () => {
+    if (requestButton) {
+        requestButton.addEventListener("click", (e) => {
+            e.preventDefault(); 
+            requestContent.style.display = "grid";
+            regContent.style.display = "none";
+        })
     }
-});
+    
+    if (regButton) {
+        // regButton.addEventListener("click", (e) => {
+        //     e.preventDefault();  
+        //     regContent.style.display = "grid";
+        //     requestContent.style.display = "none";
+        // })
+    }
+})
 
 signIn.addEventListener("click", (e) => {
     e.preventDefault();
+    console.log(1);
 
     if (e.target === signIn && !signIn.hasAttribute(".active")) {
         signIn.classList.add("active");
@@ -76,6 +53,8 @@ signIn.addEventListener("click", (e) => {
 
 signUp.addEventListener("click", (e) => {
     e.preventDefault();
+    console.log(1);
+    
     if (e.target === signUp && !signUp.hasAttribute(".active")) {
         signUp.classList.add("active");
         signIn.classList.remove("active");

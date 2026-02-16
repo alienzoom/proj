@@ -1,0 +1,357 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="profilePage">
+        <div class="profile-container">
+            <div class="profile-main-content">
+                <aside class="sidebar">
+                    <div class="sidebar-menu-header">
+                        <p>Меню</p>
+                    </div>
+
+                    <div class="sidebar-list">
+                        <div class="sidebar-el el-1 link">
+                            <img src="../../static/main/src/profile/user.svg" alt="user" class="sidebar-img sidebar-onclick el-1">
+                            <p class="sidebar-onclick el-1">Профиль</p>
+                        </div>
+        
+                        <div class="sidebar-el el-2 link">
+                            <img src="../../static/main/src/profile/folder.svg" alt="folder" class="sidebar-img sidebar-onclick el-2">
+                            <p class="sidebar-onclick el-2">Заявки</p>
+                        </div>
+                        
+                        <div class="sidebar-el el-3 link">
+                            <img src="../../static/main/src/profile/calendar.svg" alt="calendar" class="sidebar-img sidebar-onclick el-3">
+                            <p class="sidebar-onclick el-3">Мероприятия</p>
+                        </div>
+        
+                        <div class="sidebar-el el-4 link">
+                            <img src="../../static/main/src/profile/server.svg" alt="server" class="sidebar-img sidebar-onclick el-4">
+                            <p class="sidebar-onclick el-4">Сервисы</p>
+                        </div>
+        
+                        <div class="sidebar-el el-5 link">
+                            <img src="../../static/main/src/profile/educate.svg" alt="educate" class="sidebar-img sidebar-onclick el-5">
+                            <p class="sidebar-onclick el-5">Обучение</p>
+                        </div>
+                        
+                        <div class="sidebar-el el-6 link">
+                            <img src="../../static/main/src/profile/dialog.svg" alt="dialog" class="sidebar-img sidebar-onclick el-6">
+                            <p class="sidebar-onclick el-6">Поддержка</p>
+                        </div>
+                    </div>
+                </aside>
+        
+                <div class="profile-block">
+                    <div class="profile-block block-1">
+                        <div class="profile-header">
+                            <div class="profile-header-left">
+                                <img src="../../static/main/src/profile/img-placeholder.svg" alt="img-placeholder" class="profile-header-img">
+                                
+                                {% if user.is_authenticated %}
+                                    <h2>{{ user.username }}</h2>
+                                {% else %}
+                                    <h2>Здесь будет <br>ваше имя</h2>
+                                {% endif %}            
+
+                            </div>
+                            <img src="../../static/main/src/profile/pen.svg" alt="pen" class="link pen">
+                        </div>
+        
+                        <div class="add-organization">
+                            <p><span>Добавьте организацию</span><br>Чтобы использовать все возможности ЦНП</p>
+                            <a href="#!">
+                                <button>Добавить</button>
+                            </a>
+                        </div>
+        
+                        <div class="create-project">
+                            <p><span>Создайте проект</span><br>И соберите свою команду</p>
+                            <a href="{% url 'create_team' %}">
+                                <button class="create-project-button">Создать</button>
+                            </a>
+                        </div>
+
+                        <div class="skill-list">
+                            <h2>Ваши навыки:</h2>
+                            <div class="skill-list-block">
+                            </div>
+                            <button class="add-skill">Добавить</button>
+                        </div>
+
+                        <div class="profile-team-list">
+                            <h2>Ваши команды:</h2>
+                        </div>
+                    </div>
+        
+                    <div class="profile-block block-2" style="display: none;">
+                        <h2>Заявки</h2>
+
+                        <ul class="profile-second-select-list">
+                            <li class="profile-second-select">
+                                <p>Аккаунты</p>
+                                <select name="Аккаунты" id="fitsr">Аккаунты</select>
+                            </li>
+        
+                            <li class="profile-second-select">
+                                <p>Тип усслуги</p>
+                                <select name="Тип усслуги" id="second">Тип усслуги</select>
+                            </li>
+        
+                            <li class="profile-second-select">
+                                <p>Номер заявки</p>
+                                <select name="Номер заявки" id="fird">Номер заявки</select>
+                            </li>
+                        </ul>
+        
+                        <div class="profile-second-btn-row">
+                            <a href="#!" class="profile-row-el">Все</a>
+                            <a href="#!" class="profile-row-el">На рассмотрении</a>
+                            <a href="#!" class="profile-row-el">Ждет вашего ответа</a>
+                            <a href="#!" class="profile-row-el">Одобренные</a>
+                            <a href="#!" class="profile-row-el">Отклоненные</a>
+                            <a href="#!" class="profile-row-el">Черновики</a>
+                        </div>
+        
+                        <div class="filter-controls">
+                            <label for="filter-skills-js">Фильтровать по навыкам (через запятую):</label>
+                            <input type="text" id="filter-skills-js" placeholder="Например: Python, JS">
+                            
+                            <button id="apply-filter-js">Применить фильтр</button>
+                            <button id="reset-filter-js">Сбросить фильтр</button>
+                        </div>
+
+                        {% block requests-display %}
+                            {% if applications %}   
+                            <div class="profile-second-request-list">
+                                {% for el in applications%}
+                                    <div class="profile-second-request-el">
+                                        <h3>Заявка № {{ el.id }}</h3>
+                                        <p>{{ el.organization_name }}</p>
+                                        <p>Инициатор: {{ el.contact_first_name }} {{ el.contact_last_name }}</p>
+                                        <p>{{ el.solution_name }}</p>
+                                        <p class="skillList">{{ el.skill_list }}</p>
+                                        <p>Итоговая сумма: {{ total_price }}</p>
+                                    </div>
+                                    {% endfor %}    
+                            </div>
+                            {% else %}
+                                <div class="profile-second-not-found">
+                                    <div class="not-found-block">
+                                        <img src="../../static/main/src/profile/search.svg" alt="">
+                                        <h2>Ничего не найдено</h2>
+                                    </div>
+                                    <p>Попробуйте изменить условия поиска</p>
+                                    <a href="#!">
+                                        <button class="reset-filters">Сбросить фильтры</button>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+                    </div>
+        
+                    <div class="profile-block block-3" style="display: none;">
+                        <div class="profile-third-1st-row">
+                            <h2>Мероприятия</h2>
+                            <div>
+                                <p>Мои мероприятия</p>
+                                <p>Все мероприятия</p>
+                            </div>
+                        </div>
+        
+                        <div class="profile-third-search">
+                            <input type="input" placeholder="Поиск по мероприятиям">
+                            <a href="#!">
+                                <img src="../../static/main/src/profile/lupka.svg" alt="искать">
+                            </a>
+                        </div>
+        
+                        <div class="profile-third-last-row">
+                            <div class="profile-third-last-block select">
+                                    <p>Все типы мероприятий</p>
+                                    <select name="мероприятия" id="1">
+                                        <option value="Выставка"></option>
+                                        <option value="Вебинар "></option>
+                                        <option value="Мероприятие"></option>
+                                        <option value="Встреча"></option>
+                                        <option value="Конференция"></option>
+                                        <option value="Обучение"></option>
+                                    </select>
+                            </div>
+        
+                            <div class="profile-third-last-block">
+                                <p>Дата</p>
+                                <a href="#!">
+                                    <img src="../../static/main/src/profile/calendar.svg" alt="calendar">
+                                </a>
+                            </div>
+                        </div>
+        
+                        <div class="profile-third-info">
+                            <div class="profile-third-info-block">
+                                <h2>Нет информации</h2>
+                                <p>Нет информации</p>
+                                <h3>Нет информации</h3>
+                            </div>
+                            
+                            <div class="profile-third-info-block">
+                                <h2>Нет информации</h2>
+                                <p>Нет информации</p>
+                                <h3>Нет информации</h3>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="profile-block block-4"  style="display: none;">
+                            <div class="block-4-first-line">
+                            <h2>Мои сервисы</h2>
+                            <div class="block-4-first-line-info">
+                                <p>Начните использовать сервисы и информация о них появится здесь</p>
+                                <svg>
+
+                                </svg>
+                                <img src="../../static/main/src/profile/cog.svg" alt="cog" class="cog-1">
+                                <img src="../../static/main/src/profile/cog.svg" alt="cog" class="cog-2">
+                            </div>
+                        </div>
+
+                        <div class="block-4-second-line">
+                            <h2>Мои сервисы</h2>
+                            <div class="block-4-second-line-search">
+                                <input type="search" placeholder="Найти">
+                                <img src="../../static/main/src/profile/lupka.svg" alt="лупа" class="link">
+                            </div>
+                        </div>
+
+                        <div class="block-4-main">
+                            <div class="block-4-main-block">
+                                <img src="../../static/main/src/profile/brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-4-main-block">
+                                <img src="../../static/main/src/profile/brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-4-main-block">
+                                <img src="../../static/main/src/profile/brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-4-main-block">
+                                <img src="../../static/main/src/profile/brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-4-main-block">
+                                <img src="../../static/main/src/profile/brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-4-main-block">
+                                <img src="../../static/main/src/profile/brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="profile-block block-5"  style="display: none;">
+                        <div class="block-5-first-line">
+                            <h2>Мое обучение</h2>
+                            <div class="block-5-first-line-info">
+                                <p>Начните обучение и информация о нем появится здесь</p>
+                                <img src="../../static/main/src/profile/encyclopedia.svg" alt="encyclopedia" class="encyclopedia">
+                            </div>
+                        </div>
+
+                        <div class="block-5-second-line">
+                            <h2>Доступное обучение</h2>
+                        </div>
+
+                        <div class="block-5-main">
+                            <div class="block-5-main-block">
+                                <img src="../../static/main/src/profile/education-brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-5-main-block">
+                                <img src="../../static/main/src/profile/education-brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-5-main-block">
+                                <img src="../../static/main/src/profile/education-brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-5-main-block">
+                                <img src="../../static/main/src/profile/education-brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-5-main-block">
+                                <img src="../../static/main/src/profile/education-brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                            <div class="block-5-main-block">
+                                <img src="../../static/main/src/profile/education-brain.png" alt="smart people looking at smart big brain">
+                                <p>Нет информации</p>
+                                <button>
+                                    Перейти в сервис
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="profile-block block-6" style="display: none;">
+                        <p>Служба поддержки</p>
+                        <div class="block-6-chat-bot">
+                            <div class="block-6-chat-bot-text">
+                                <h2>Скоро здесь будет наш новый чат-бот</h2>
+                                <p>А пока вы можете обратиться в нашу службу поддержки</p>
+                                
+                                <div class="block-6-chat-bot-text-tech">
+                                    <p>Вопросы по сервисам</p>
+                                    <p>Техническая поддержка</p>
+                                    <p>Телефон</p>
+                                </div>
+                            </div>
+                            <img src="../../static/main/src/profile/cog-block-6.svg" alt="cog">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="profile-menu-btn menu-btn">
+                    <img src="../../static/main/src/section2/square.svg" class="menu-btn">
+                    <img src="../../static/main/src/section2/square.svg" class="menu-btn">
+                    <img src="../../static/main/src/section2/square.svg" class="menu-btn">
+                    <img src="../../static/main/src/section2/square.svg" class="menu-btn">
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

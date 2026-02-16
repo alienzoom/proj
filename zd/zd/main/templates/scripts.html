@@ -1,0 +1,320 @@
+
+<script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+        // AJAX обработка форм
+        const loginForm = document.getElementById('login-form');
+        const registrationForm = document.getElementById('registration-form');
+        
+        function submitForm(form, actionType) {
+            const formData = new FormData(form);
+            formData.append('action', actionType);
+            
+            const submitButton = form.querySelector('input[type="submit"]');
+            const originalText = submitButton.value;
+            
+            submitButton.value = actionType === 'login' ? 'Вход...' : 'Регистрация...';
+            submitButton.disabled = true;
+            
+            // Удаляем старые ошибки
+            const errorElements = form.querySelectorAll('.error');
+            errorElements.forEach(el => el.remove());
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const message = actionType === 'login' ? 'Вход выполнен успешно!' : 'Регистрация прошла успешно!';
+                    showNotification(message, 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url;
+                    }, 1000);
+                } else {
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach(fieldName => {
+                            if (fieldName === 'general') {
+                                showNotification(data.errors[fieldName][0].message, 'error');
+                            } else {
+                                const field = form.querySelector(`[name="${fieldName}"]`);
+                                if (field) {
+                                    const errorDiv = document.createElement('div');
+                                    errorDiv.className = 'error';
+                                    errorDiv.textContent = data.errors[fieldName][0].message;
+                                    field.parentNode.insertBefore(errorDiv, field.nextSibling);
+                                }
+                            }
+                        });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Произошла ошибка при отправке формы', 'error');
+            })
+            .finally(() => {
+                submitButton.value = originalText;
+                submitButton.disabled = false;
+            });
+        }
+        
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitForm(this, 'login');
+            });
+        }
+        
+        if (registrationForm) {
+            registrationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitForm(this, 'register');
+            });
+        }
+        
+        function showNotification(message, type) {
+            const oldNotifications = document.querySelectorAll('.notification');
+            oldNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 5px;
+                color: white;
+                font-weight: bold;
+                z-index: 10000;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            if (type === 'success') {
+                notification.style.backgroundColor = '#4CAF50';
+                notification.style.backgroundColor = '#f44336';
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            .error {
+                color: #f44336;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+        `;
+        document.head.appendChild(style);
+    });
+</script>
+
+<!--  -->
+
+<script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+        const applicationForm = document.getElementById('application-form');
+        
+        if (applicationForm) {
+            applicationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log(1);
+                
+                
+                const submitButton = document.getElementById('application-submit');
+
+                const formData = new FormData(this);
+                formData.append('action', 'application')
+
+                const originalText = submitButton.value;
+                
+                submitButton.value = 'Отправка...';
+                submitButton.disabled = true;
+                
+                const errorElements = document.querySelectorAll('#application-form .error');
+                errorElements.forEach(el => el.remove());
+
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        applicationForm.reset();
+                    } else {
+                        if (data.errors) {
+                            Object.keys(data.errors).forEach(fieldName => {
+                                const field = applicationForm.querySelector(`[name="${fieldName}"]`);
+                                if (field) {
+                                    const errorDiv = document.createElement('div');
+                                    errorDiv.className = 'error';
+                                    errorDiv.textContent = data.errors[fieldName][0].message;
+                                    field.parentNode.insertBefore(errorDiv, field.nextSibling);
+                                }
+                            });
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    submitButton.value = originalText;
+                    submitButton.disabled = false;
+                    
+                });
+            });
+        }
+    });
+</script>
+
+<!--  -->
+
+<!-- <script defer>
+    const jsonData = JSON.parse('{{ application_json_str|safe }}'); 
+    
+    const filterInputJs = document.getElementById('filter-skills-js');  
+    const applyFilterBtnJs = document.getElementById('apply-filter-js');
+    const resetFilterBtnJs = document.getElementById('reset-filter-js');
+    const applicationsListContainerJs = document.querySelector('.profile-second-request-list');
+
+    let allApplicationsData = []; 
+    let currentRenderedApplications = [];
+
+    function getAllApplicationsFromDOM() {
+        const applicationElements = applicationsListContainerJs.querySelectorAll('.profile-second-request-el');
+        const applicationsData = [];
+
+        applicationElements.forEach(el => {
+            const idElement = el.querySelector('h3');
+            const id = idElement ? idElement.textContent.replace('Заявка № ', '').trim() : 'N/A';
+            
+            let organizationName = '';
+            let solutionName = '';
+            const skillListElement = el.querySelector('.skillList');
+            const skillListText = skillListElement ? skillListElement.textContent.trim() : '';
+
+            const nonSkillParagraphs = Array.from(el.querySelectorAll('p')).filter(p => !p.classList.contains('skillList'));
+            
+            if (nonSkillParagraphs.length > 0) {
+                organizationName = nonSkillParagraphs[0].textContent.trim();
+            }
+            if (nonSkillParagraphs.length > 1) {
+                solutionName = nonSkillParagraphs[1].textContent.trim();
+            }
+
+            applicationsData.push({
+                id: id,
+                organization_name: organizationName,
+                solution_name: solutionName,
+                skill_list_text: skillListText 
+            });
+        });
+        return applicationsData;
+    }
+
+    function renderApplicationsJs(applicationsToRender) {
+        if (!applicationsListContainerJs) {
+            console.error('Контейнер ".profile-second-request-list" не найден!');
+            return;
+        }
+        applicationsListContainerJs.innerHTML = '';
+
+        if (applicationsToRender.length === 0) {
+            applicationsListContainerJs.innerHTML = '<p>Нет заявок, соответствующих вашим критериям.</p>';
+            return;
+        }
+
+        applicationsToRender.forEach(app => {
+            const appElement = document.createElement('div');
+            appElement.classList.add('profile-second-request-el');
+            
+            const skillsString = app.skill_list_text;
+
+            appElement.innerHTML = `
+                <h3>Заявка № ${app.id}</h3>
+                <p>${app.organization_name}</p>
+                <p>${app.solution_name}</p>
+                <p class="skillList">${skillsString}</p>
+            `;
+            applicationsListContainerJs.appendChild(appElement);
+        });
+        currentRenderedApplications = applicationsToRender; 
+    }
+
+    function parseSkillsString(skillsString) {
+        if (!skillsString || typeof skillsString !== 'string') {
+            return [];
+        }
+        return skillsString.split(/,\s*/)
+                        .map(s => s.trim().toLowerCase())
+                        .filter(s => s);
+    }
+
+    function applyFilterJs() {
+        const filterText = filterInputJs.value.trim().toLowerCase();
+        
+        const requiredSkills = parseSkillsString(filterText);
+
+        let filteredApplications = [];
+
+        if (requiredSkills.length === 0) {
+            filteredApplications = allApplicationsData;
+        } else {
+            filteredApplications = allApplicationsData.filter(app => {
+                const appSkills = parseSkillsString(app.skill_list_text);
+                return requiredSkills.some(reqSkill => appSkills.includes(reqSkill));
+            });
+        }
+        renderApplicationsJs(filteredApplications);
+    }
+
+    if (applyFilterBtnJs) {
+        applyFilterBtnJs.addEventListener('click', applyFilterJs);
+    }
+    if (resetFilterBtnJs) {
+        resetFilterBtnJs.addEventListener('click', () => {
+            filterInputJs.value = '';
+            applyFilterJs();
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (applicationsListContainerJs) {
+            allApplicationsData = getAllApplicationsFromDOM();
+            renderApplicationsJs(allApplicationsData);
+        } else {
+            console.error("Контейнер '.profile-second-request-list' не найден.");
+        }
+    });
+</script> -->
+

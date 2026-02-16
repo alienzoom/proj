@@ -1,0 +1,85 @@
+<section class="section-1">
+    <div class="container">
+            <div class="profile">
+                <button class="profile-left">Профиль</button>
+                
+                <div class="profile-header">
+                    <img src="" alt="Профиль" class="profile-avatar"/>
+                    <h2>Иван Иванов Иванович</h2>
+                </div>
+                <div class="profile-actions">
+                    <button class="profile-add-org">Добавьте организацию</button>
+                    <button class="profile-edit"><img src="" alt></button>
+                </div>
+            </div>
+            
+            <div class="application">
+                <button class="application-btn">Заявки</button>
+                <h2>Заявки</h2>
+                <div class="application-content">
+                    <button class="app-accounts">Аккаунты</button>
+                    <button class="app-type-of-service">Тип услуги</button>
+                    <button class="app-num">Номер заявки</button>
+                    <button class="app-under-consideration">На рассмотрении</button>
+                    <button class="app-approved">Одобренные</button>
+                    <button class="app-rejected">Отклонённые</button>
+                    <button class="app-drafts">Черновики</button>
+                </div>
+                <div class="app-under">
+                    <img src="" alt="Nothing founded" class="app-under-img"/>
+                    <p>Ничего не найдено</p>
+                    <button class="reset-filters">Сбросить фильтры</button>
+                </div>
+            </div>
+            
+            <div class="services">
+                <button class="services-btn">Услуги</button>
+                <h2>Сервисы</h2>
+            </div>
+
+            <div class="events">
+                <button class="events-btn">Мероприятия</button>
+                <h2>Мероприятия</h2>
+                    <div class="events-controls">
+                        <button class="my-events-btn">Мои мероприятия</button>
+                        <button class="all-events-btn">Все мероприятия</button>
+                        <input type="text" class="events-search" placeholder="Поиск по мероприятиям" />
+                        <select class="events-type-dropdown">
+                            <option value="">Все типы</option>
+                            <option value="conference">Конференция</option>
+                            <option value="seminar">Семинар</option>
+                            <option value="workshop">Воркшоп</option>
+                            <option value="webinar">Вебинар</option>
+                        </select>
+                        <div class="events-date-picker">
+                            <button class="date-btn" onclick="showCalendar()">Дата</button>
+                            <input type="date" class="date-selector" style="display:none;" />
+                        </div>
+                    </div>
+                <div class="events-panels">
+                    <div class="events-panel events-panel-main">
+                        <h3>Информация о мероприятии</h3>
+                        <p>Здесь будет отображаться информация о выбранном мероприятии.</p>
+                    </div>
+                    <div class="events-panel events-panel-details">
+                        <h3>Детали мероприятия</h3>
+                        <p>Здесь будут детали и дополнительная информация.</p>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function showCalendar() {
+                document.querySelector('.date-selector').style.display = 'inline-block';
+            }
+            </script>
+
+            <div class="education">
+                <button class="education-btn">Обучение</button>
+            </div>
+           
+            <div class="support">
+                <button class="support-btn">Поддержка</button>
+            </div>    
+        
+        </div>
+</section>

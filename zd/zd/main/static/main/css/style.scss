@@ -76,7 +76,7 @@ button,
     &-sign-in,
     &-request {
         display: grid;
-        row-gap: 45px;
+        row-gap:  clamp(16px, 4.5vw, 30px);
         p {
             font-size: clamp(16px, 5vw, 35px);
             color: var(--dark-col);
@@ -94,7 +94,7 @@ button,
     }
 
     &Page {
-        display: none;
+        display: grid;
         align-self: center;
         padding: 6vw 1.92vw;
         min-height: 100vh;
@@ -139,9 +139,9 @@ button,
     background: linear-gradient(to bottom, var(--light-red-col), var(--dark-gray-col)) !important;
 }
 
-////////
-/// 
-/// 
+//////
+////
+//
 /* ALERT */
 .notifications-container {
     position: fixed;

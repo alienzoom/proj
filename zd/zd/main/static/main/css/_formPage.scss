@@ -1,0 +1,20 @@
+.requirements {
+    &-list {
+        display: grid;
+        gap: clamp(10px, 3vw, 22px);
+    }
+    
+    &-el {
+        display: grid;
+        padding: clamp(6px, 1vw, 12px);
+        gap: clamp(6px, 1vw, 12px);
+        
+        background-color: var(--light-gray-col);
+        border-radius: 14px;
+        border: 3px solid var(--dark-gray-col);
+
+        label {
+            font-size: clamp(10px, 2.5vw, 20px);
+        }
+    }
+}

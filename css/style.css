@@ -63,9 +63,9 @@
 .nav-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 25px;
+  gap: 25px !important;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between !important;
   padding: 10px 70px;
 }
 .nav-link {
@@ -1546,4 +1546,31 @@ button:hover h1,
 .form-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.date-input {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  padding: 4px;
+  cursor: pointer;
+  outline: none;
+}
+.date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #333;
+}
+.close-btn:hover {
+  color: #000;
 }/*# sourceMappingURL=style.css.map */

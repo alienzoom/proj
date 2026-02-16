@@ -4,10 +4,47 @@
     }
 }
 
+@media screen and (min-width: 980px) {
+     .nav {
+        &-list {
+            display: flex !important;
+        }
+     }
+}
 @media screen and (max-width: 980px) {
-    .nav  {
-        display: none;
+    //HIDDEN-NAV
+    .nav {
+        position: relative;
+        &-list {
+            display: none;
+            padding: 4vw;
+            gap: 2.5vw;
+        }
+        &-link {
+            h1 {
+                font-size: clamp(14px, 4vw, 18px) !important;
+            }
+        }
+        &-hidden-btn {
+            display: grid;
+            justify-self: flex-end;
+            margin: 2vw;
+    
+            justify-items: end;
+            gap: 1vw;
+    
+            hr {
+                border: 3px solid var(--light-red-col);
+            }
+            .long-hr {
+               width: 6vw;
+            }
+            .short-hr {
+                width: 3vw;
+            }
+        }
     }
+
     //HEADER
     .header {
         padding-inline: clamp(10px, 4vw, 50px);
@@ -211,26 +248,26 @@
             }
         }
         &-person {
-                &5 {
-                    @media (max-width: 830px) {
-                        display: none;
-                    }
+            &5 {
+                @media (max-width: 830px) {
+                    display: none;
                 }
-                &4 {
-                    @media (max-width: 710px) {
-                        display: none;
-                    }
+            }
+            &4 {
+                @media (max-width: 710px) {
+                    display: none;
                 }
-                &3 {
-                    @media (max-width: 480px) {
-                        display: none;
-                    }
+            }
+            &3 {
+                @media (max-width: 480px) {
+                    display: none;
                 }
-                &2, &1 {
-                    @media (max-width: 400px) {
-                        display: none;
-                    }
+            }
+            &2, &1 {
+                @media (max-width: 400px) {
+                    display: none;
                 }
+            }
         }
     }
 }

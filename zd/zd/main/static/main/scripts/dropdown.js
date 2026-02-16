@@ -1,5 +1,3 @@
-console.log("dropdown.js executed");
-
 const navList = document.querySelectorAll(".nav-link");
 
 const hideAllDropdowns = () => {
@@ -15,7 +13,7 @@ const hideAllDropdowns = () => {
 
 const positionDropdown = (element, dropdown) => {
     const rect = element.getBoundingClientRect();
-    const dropdownWidth = 600;
+    const dropdownWidth = 800;
     const viewportWidth = window.innerWidth;
 
     dropdown.classList.remove("dropdown-right-aligned");
