@@ -100,7 +100,7 @@ def project_create(request):
             messages.error(request, f'Ошибка при создании проекта: {e}')
     
     # GET запрос - показываем форму
-    return render(request, 'projects/project_create.html', {
+    return render(request, 'createProject.html', {
         'title': 'Создание проекта'
     })
 
