@@ -1,122 +1,649 @@
+.profile-main-content.team-page {
+    background: linear-gradient(135deg, #a7182d 55%, #f3f2f2 50%);
+}
 .create-team {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.create-team-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 40px 20px;
+    background: #ff3d5a;
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.create-team-header p {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-team-content {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.your-team {
+    min-height: 100px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px dashed #dee2e6;
+}
+
+.separator {
+    margin: 30px 0;
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #a7182d, transparent);
+}
+
+.choose-request-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+}
+
+.choose-request-el {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.choose-request-el:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+    border-color: #a7182d;
+}
+
+.choose-request-el.selected-application {
+    border-color: #28a745;
+    background: #f0fff4;
+}
+
+.choose-request-add-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #ff3d5a;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+}
+
+.choose-request-add-btn:hover {
+    transform: scale(1.1);
+    background: #764ba2;
+}
+
+.choose-request-add-btn.selected {
+    background: #28a745;
+}
+
+.request-number {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.request-author {
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.choose-request-el-orgname {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 10px 0 5px;
+}
+
+.org-name {
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+details {
+    margin-top: 15px;
+}
+
+summary {
+    cursor: pointer;
+    color: #a7182d;
+    font-weight: 500;
+    padding: 5px 0;
+    outline: none;
+}
+
+summary:hover {
+    color: #764ba2;
+}
+
+.details-content {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.details-content h3 {
+    font-size: 14px;
+    color: #495057;
+    margin: 10px 0 5px;
+}
+
+.details-content h4 {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 400;
+    line-height: 1.6;
+    margin: 0 0 15px;
+    padding-left: 10px;
+    border-left: 3px solid #a7182d;
+}
+
+.budget-sum {
+    color: #28a745;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.contact-info {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+}
+
+.contact-info p {
+    margin: 5px 0;
+    color: #6c757d;
+}
+
+.contact-info a {
+    color: #a7182d;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+.no-applications {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    color: #6c757d;
+    font-size: 18px;
+}
+
+.create-final-team-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 40px auto 0;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #a7182d 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.create-final-team-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.create-final-team-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #ff3d5a;
+}
+
+/* Стили для секции фильтрации */
+.filter-section {
+    background: white;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border: 2px solid #e0e0e0;
+    overflow: hidden;
+}
+
+.filter-header {
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #ff3838 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.filter-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.filter-toggle {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.filter-content {
+    padding: 20px;
+    background: #f8f9fa;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.search-wrapper {
+    display: flex;
+    position: relative;
+}
+
+.filter-input {
+    flex: 1;
+    padding: 10px 35px 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.filter-input:focus {
+    border-color: #ff3838;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.filter-input.small {
+    width: 100px;
+}
+
+.search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 5px;
+}
+
+.search-clear:hover {
+    color: #ff4757;
+}
+
+.budget-range {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.range-separator {
+    color: #666;
+    font-size: 14px;
+}
+
+.skills-filter {
     display: flex;
     flex-direction: column;
-    gap: 2vw;
-    width: 100%;
-    &-header {
-        display: flex;
-        margin: 0 auto;
-        margin-bottom: 4wv;
-        text-align: center;
-        color: var(--dark-col);
-        font-size: clamp(24px, 4vw, 55px);
-        p {
-            line-height: 1;
-        }
-    }
-
-    &-content {
-        overflow: scroll;
-        display: flex;
-        height: 85vh;
-        max-height: 1200px;
-        padding: 21px 15px;
-        
-        background: var(--light-gray-col);
-        border-radius: 20px;
-        border: 4px solid var(--dark-gray-col);
-        
-        .your-team {
-            width: 40%;
-            padding-inline: 10px;
-        }
-        
-        .choose-request {
-            &-list  {
-                width: 60%;
-            }
-            &-el {
-                position: relative;
-                margin-top: 10px;
-                padding: 10px 20px;
-                background-color: #a7a6a6;
-                border-radius: 10px;
-                border: 2px solid #333;
-
-                p {
-                    color: var(--dark-col);
-                    font-size: clamp(15px, 2.3vw, 25px);
-                }
-                h2 {
-                    font-size: clamp(12px, 2vw, 20px);
-                    color: #222;
-                }
-                h3 {
-                    margin-top: 6px;
-                    font-size: clamp(10px, 1.8vw, 18px);
-                    color: #323232;
-                }
-                h4 {
-                    margin-bottom: 16px;
-                    font-size: clamp(7px, 1.5vw, 12px);
-                    color: #565454;
-                }
-                &-orgname {
-                    margin-top: 10px;
-                }
-                &-more {
-                    font-size: clamp(11px, 1.9vw, 18px);
-                    margin-top: 12px;
-                    color: #222;
-                }
-            }
-            
-            &-add-btn {
-                position: absolute;
-                top: 10px;
-                right: 15px;
-                padding-inline: 8px;
-                color: #000;
-                border-radius: 50%;
-                border: 2px solid;
-                background: #727272;
-            }
-        }
-        .separator {
-            display: flex;
-            text-align: center;
-            align-self: center;
-            justify-self: center;
-            margin: 0 10px;
-            width: 3px;
-            height: 100%;
-            border: 2px solid var(--dark-gray-col);
-        }
-    }
-
+    gap: 10px;
 }
 
-.choose-request-el, 
-.added-request-item {
-    padding: 21px 15px;
-    margin-bottom: 10px;
+.selected-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 30px;
+}
+
+.skill-filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: linear-gradient(135deg, #ff3838 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.skill-filter-tag .tag-remove {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.skill-filter-tag .tag-remove:hover {
+    color: #ff4757;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.filter-apply, .filter-reset {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-apply {
+    background: linear-gradient(135deg, #ff3838 0%, #764ba2 100%);
+    color: white;
+    flex: 2;
+}
+
+.filter-apply:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.filter-reset {
+    background: #f0f0f0;
+    color: #666;
+    flex: 1;
+}
+
+.filter-reset:hover {
+    background: #e0e0e0;
+}
+
+/* Теги навыков в карточках */
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.skill-tag {
+    padding: 3px 8px;
+    background: #e0e7ff;
+    color: #4f46e5;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Сообщение об отсутствии результатов */
+.no-filter-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    color: #666;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .budget-range {
+        flex-direction: column;
+        align-items: flex-start;
+    }
     
-    background-color: #a7a6a6;
-    border-radius: 10px;
-    border: 2px solid #333;
-
-    p {
-        color: var(--dark-col);
-        font-size: clamp(15px, 2.3vw, 25px);
+    .filter-input.small {
+        width: 100%;
     }
-    h2 {
-        font-size: clamp(12px, 2vw, 20px);
-        color: #222;
+    
+    .filter-actions {
+        flex-direction: column;
     }
 }
 
-.remove-team-btn {
-    color: #520505;
-    margin-top: 10px;
-    font-size: clamp(12px, 2vw, 20px);
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.choose-request-el {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .create-team-header p {
+        font-size: 20px;
+    }
+    
+    .choose-request-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .create-team-content {
+        padding: 15px;
+    }
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+    .create-team-content {
+        background: #2d2d2d;
+    }
+    
+    .your-team {
+        background: #363636;
+        border-color: #404040;
+    }
+    
+    .choose-request-el {
+        font-size: 16px;
+        background: #363636;
+        border-color: #404040;
+    }
+    
+    .request-author {
+        color: #979797;
+        border-bottom-color: #404040;
+    }
+    
+    .org-name {
+        color: #979797;
+    }
+    
+    .details-content {
+        background: #2d2d2d;
+    }
+    
+    .details-content h4 {
+        color: #b0b0b0;
+    }
+}
+/* Стили для блока выбранных участников */
+.your-team {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px dashed #ff3838;
+}
+
+.your-team-title {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.selected-count {
+    background: #ff3838;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.selected-members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 50px;
+}
+
+.selected-member-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.selected-member-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.selected-member-header h4 {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+.remove-member {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ff4757;
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.remove-member:hover {
+    background: #ff3838;
+    transform: scale(1.1);
+}
+
+.selected-member-org {
+    font-size: 14px;
+    color: #ff3838;
+    font-weight: 500;
+}
+
+.selected-member-budget {
+    font-size: 14px;
+    color: #28a745;
+    font-weight: 600;
+}
+
+.empty-selected {
+    text-align: center;
+    padding: 30px;
+    color: #999;
+    font-style: italic;
+}
+
+/* Анимация */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Стили для выбранной заявки в списке */
+.choose-request-el.selected-application {
+    border-color: #28a745;
+    background: #f0fff4;
+}
+
+.choose-request-add-btn.selected {
+    background: #28a745;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .selected-member-card {
+        padding: 12px;
+    }
 }

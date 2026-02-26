@@ -39,7 +39,7 @@ def project_list(request):
         'participating_projects': participating_projects,
         'invitations': invitations,
     }
-    return render(request, 'projects/project_list.html', context)
+    return render(request, 'projectsList.html', context)
 
 
 @login_required

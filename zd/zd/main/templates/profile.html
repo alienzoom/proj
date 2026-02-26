@@ -58,28 +58,23 @@
                         </div>
 
                         <div class="add-organization">
-                            <p><span>Добавьте организацию</span><br>Чтобы использовать все возможности ЦНП</p>
+                            <p><span>Создайте проект</span><br>Чтобы использовать все возможности ЦНП</p>
                             <a href="{% url 'project_create' %}" class="btn-add-organization">
-                                <button>Добавить</button>
+                                <button>Создать</button>
                             </a>
                         </div>
 
                         <div class="create-project">
-                            <p><span>Создайте проект</span><br>И соберите свою команду</p>
+                            <p><span>Соберите команду</span><br>И выберите участников</p>
                             <a href="{% url 'create_team' %}" class="create-project-link">
                                 <button class="create-project-button">Создать</button>
                             </a>
                         </div>
-
-                        <div class="skill-list">
-                            <h2>Ваши навыки:</h2>
-                            <div class="skill-list-block">
-                            </div>
-                            <button class="add-skill">Добавить</button>
-                        </div>
-
-                        <div class="profile-team-list">
-                            <h2>Ваши команды:</h2>
+                        <div class="create-project">
+                            <p><span>Готовые проекты</p>
+                            <a href="{% url 'project_list' %}" class="create-project-link">
+                                <button class="create-project-button">Перейти</button>
+                            </a>
                         </div>
                     </div>
         

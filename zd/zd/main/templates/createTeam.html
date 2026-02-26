@@ -1,88 +1,439 @@
 {% extends 'index.html' %}
+{% load static %}
+{% load custom_filters %}
+
 {% block content %}
 <div class="profile-container">
-    <div class="profile-main-content">
+    <div class="profile-main-content team-page">
         <div class="create-team">
             <div class="create-team-header">
                 <p>Создайте свою команду<br>и начните реализовывать ваши идеи вместе!</p>
             </div>
 
             <div class="create-team-content">
+                <!-- Блок для выбранных участников -->
                 <div class="your-team">
-    
+                    <h3 class="your-team-title">Выбранные участники <span class="selected-count" id="selectedCount">0</span></h3>
+                    <div class="selected-members-list" id="selectedMembersList">
+                        <!-- Сюда будут добавляться выбранные участники -->
+                    </div>
+                    <div class="empty-selected" id="emptySelected">
+                        <p>Вы еще не выбрали участников</p>
+                    </div>
                 </div>            
     
                 <hr class="separator">
-                <div class="choose-request-list">
-                   <div class="choose-request-el">
-                       <button type="button" class="choose-request-add-btn">+</button>
-
-                        <p>Заявка №1:</p>
-                        <p>Автор: Илья Ильич</p>
-
-                        <h2 class="choose-request-el-orgname">Название организации:</h2>
-                        <h2>MyOrganization.com</h2>
-                        
-                       <details>
-                           <summary class="choose-request-el-more">Подробнее</summary>
-                           <h3>Предлагаемое решение:</h3>
-                           <h4>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum magni asperiores natus eligendi? Quo necessitatibus ipsa molestias ab voluptatum a voluptas numquam ea aut, omnis repellendus recusandae aspernatur dolorum fuga.</h4>
-                           
-                           <h3>Опыт применения:</h3>
-                           <h4>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum magni asperiores natus eligendi? Quo necessitatibus ipsa molestias ab voluptatum a voluptas numquam ea aut, omnis repellendus recusandae aspernatur dolorum fuga.</h4>
-                           
-                           <h3>Общая сумма бюджета: <span>38000</span>₽</h3>
-                        </details>
+                
+                <!-- Секция фильтрации -->
+                <div class="filter-section">
+                    <div class="filter-header">
+                        <h3>Фильтр заявок</h3>
+                        <button type="button" class="filter-toggle" id="filterToggle">▼</button>
                     </div>
-
-                   <div class="choose-request-el">
-                       <button type="button" class="choose-request-add-btn">+</button>
-
-                        <p>Заявка №2:</p>
-                        <p>Автор: Ильич Фёдор</p>
+                    
+                    <div class="filter-content" id="filterContent">
+                        <!-- Поиск -->
+                        <div class="filter-group">
+                            <label for="searchInput">Поиск:</label>
+                            <div class="search-wrapper">
+                                <input type="text" 
+                                       id="searchInput" 
+                                       class="filter-input" 
+                                       placeholder="Поиск по названию организации, автору...">
+                                <button type="button" class="search-clear" id="searchClear">✕</button>
+                            </div>
+                        </div>
                         
-                        <h2 class="choose-request-el-orgname">Название организации:</h2>
-                        <h2>MyNewOrg.com</h2>
+                        <!-- Фильтр по бюджету -->
+                        <div class="filter-group">
+                            <label>Бюджет:</label>
+                            <div class="budget-range">
+                                <input type="number" 
+                                       id="budgetMin" 
+                                       class="filter-input small" 
+                                       placeholder="От" 
+                                       min="0">
+                                <span class="range-separator">—</span>
+                                <input type="number" 
+                                       id="budgetMax" 
+                                       class="filter-input small" 
+                                       placeholder="До" 
+                                       min="0">
+                            </div>
+                        </div>
                         
-                        <details>
-                           <summary class="choose-request-el-more">Подробнее</summary>
-                           <h3>Предлагаемое решение:</h3>
-                           <h4>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum magni asperiores natus eligendi? Quo necessitatibus ipsa molestias ab voluptatum a voluptas numquam ea aut, omnis repellendus recusandae aspernatur dolorum fuga.</h4>
-                           
-                           <h3>Опыт применения:</h3>
-                           <h4>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum magni asperiores natus eligendi? Quo necessitatibus ipsa molestias ab voluptatum a voluptas numquam ea aut, omnis repellendus recusandae aspernatur dolorum fuga.</h4>
-                           
-                           <h3>Общая сумма бюджета: <span>122000</span>₽</h3>
-                        </details>
+                        <!-- Фильтр по навыкам -->
+                        <div class="filter-group">
+                            <label>Навыки:</label>
+                            <div class="skills-filter">
+                                <input type="text" 
+                                       id="skillInput" 
+                                       class="filter-input" 
+                                       placeholder="Введите навык (например: Python)">
+                                <div class="selected-skills" id="selectedSkills"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Кнопки действий -->
+                        <div class="filter-actions">
+                            <button type="button" class="filter-apply" id="applyFilters">Применить</button>
+                            <button type="button" class="filter-reset" id="resetFilters">Сбросить</button>
+                        </div>
                     </div>
+                </div>
+                
+                <!-- Список заявок -->
+                <div class="choose-request-list" id="applicationsList">
+                    {% if applications %}
+                        {% for app in applications %}
+                        <div class="choose-request-el" 
+                             data-application-id="{{ app.id }}"
+                             data-organization="{{ app.organization_name|lower }}"
+                             data-author="{{ app.contact_first_name|lower }} {{ app.contact_last_name|lower }}"
+                             data-budget="{{ app.requirement_price|default:'0' }}"
+                             data-skills="{{ app.skill_list|lower }}"
+                             data-solution="{{ app.solution_description|lower }}">
+                            
+                            <button 
+                                type="button" 
+                                class="choose-request-add-btn" 
+                                onclick="selectApplication('{{ app.id }}')">
+                                +
+                            </button>
 
-                   <div class="choose-request-el">
-                       <button type="button" class="choose-request-add-btn">+</button>
+                            <p class="request-number">Заявка №{{ forloop.counter }}:</p>
+                            <p class="request-author">Автор: {{ app.contact_first_name }} {{ app.contact_last_name }}</p>
 
-                        <p>Заявка №3:</p>
-                        <p>Автор: Егор Ильич</p>
-
-                        <h2 class="choose-request-el-orgname">Название организации:</h2>
-                        <h2>SomeAwesomeOrg.com</h2>
-                        
-                       <details>
-                           <summary class="choose-request-el-more">Подробнее</summary>
-                           <h3>Предлагаемое решение:</h3>
-                           <h4>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum magni asperiores natus eligendi? Quo necessitatibus ipsa molestias ab voluptatum a voluptas numquam ea aut, omnis repellendus recusandae aspernatur dolorum fuga.</h4>
-                           
-                           <h3>Опыт применения:</h3>
-                           <h4>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum magni asperiores natus eligendi? Quo necessitatibus ipsa molestias ab voluptatum a voluptas numquam ea aut, omnis repellendus recusandae aspernatur dolorum fuga.</h4>
-                           
-                           <h3>Общая сумма бюджета: <span>54000</span>₽</h3>
-                       </details>
-                   </div>
+                            <h2 class="choose-request-el-orgname">Название организации:</h2>
+                            <h2 class="org-name">{{ app.organization_name }}</h2>
+                            
+                            <!-- Добавляем теги навыков -->
+                            <div class="skill-tags">
+                                {% if app.skill_list %}
+                                    {% for skill in app.skill_list|split:',' %}
+                                        <span class="skill-tag">{{ skill|trim }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            
+                            <details>
+                                <summary class="choose-request-el-more">Подробнее</summary>
+                                
+                                <div class="details-content">
+                                    <h3>Предлагаемое решение:</h3>
+                                    <h4>{{ app.solution_description|default:"Не указано" }}</h4>
+                                    
+                                    <h3>Опыт применения:</h3>
+                                    <h4>{{ app.solution_experience|default:"Не указано" }}</h4>
+                                    
+                                    <h3>Требуемые ресурсы:</h3>
+                                    <h4>{{ app.requirement_name|default:"Не указано" }} - {{ app.requirement_price|default:"0" }}₽</h4>
+                                    
+                                    <h3>Навыки:</h3>
+                                    <div class="skill-list-detailed">
+                                        {{ app.skill_list|default:"Не указано" }}
+                                    </div>
+                                    
+                                    <h3>Общая сумма бюджета: <span class="budget-sum">{{ app.requirement_price|default:"0" }}</span>₽</h3>
+                                    
+                                    <div class="contact-info">
+                                        <h3>Контакты:</h3>
+                                        <p>Телефон: {{ app.contact_phone }}</p>
+                                        <p>Email: {{ app.contact_email }}</p>
+                                        {% if app.organization_website %}
+                                        <p>Сайт: <a href="{{ app.organization_website }}" target="_blank">{{ app.organization_website }}</a></p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-applications">
+                            <p>Пока нет доступных заявок</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
-            <button class="create-final-team-btn" type="button">
+            <button class="create-final-team-btn" type="button" id="createTeamBtn" disabled>
                 Создать команду
             </button>
         </div>
     </div>
 </div>
+
+<!-- Фильтр-теги шаблон -->
+<template id="skillTagTemplate">
+    <span class="skill-filter-tag">
+        <span class="tag-text"></span>
+        <button type="button" class="tag-remove">✕</button>
+    </span>
+</template>
+
+<script>
+let selectedApplications = [];
+let activeSkillFilters = [];
+
+// Функция для обновления отображения выбранных участников
+function updateSelectedMembers() {
+    const selectedList = document.getElementById('selectedMembersList');
+    const selectedCount = document.getElementById('selectedCount');
+    const emptySelected = document.getElementById('emptySelected');
+    
+    if (selectedApplications.length === 0) {
+        emptySelected.style.display = 'block';
+        selectedList.innerHTML = '';
+        selectedCount.textContent = '0';
+        return;
+    }
+    
+    emptySelected.style.display = 'none';
+    selectedList.innerHTML = '';
+    selectedCount.textContent = selectedApplications.length;
+    
+    selectedApplications.forEach(appId => {
+        const sourceElement = document.querySelector(`[data-application-id="${appId}"]`);
+        if (!sourceElement) return;
+        
+        const author = sourceElement.querySelector('.request-author').textContent;
+        const orgName = sourceElement.querySelector('.org-name').textContent;
+        const budget = sourceElement.querySelector('.budget-sum')?.textContent || '0';
+        
+        const memberCard = document.createElement('div');
+        memberCard.className = 'selected-member-card';
+        memberCard.dataset.applicationId = appId;
+        memberCard.innerHTML = `
+            <div class="selected-member-header">
+                <h4>${author.replace('Автор:', '').trim()}</h4>
+                <button class="remove-member" onclick="removeSelectedApplication('${appId}')">×</button>
+            </div>
+            <div class="selected-member-org">${orgName}</div>
+            <div class="selected-member-budget">Бюджет: ${budget} ₽</div>
+        `;
+        
+        selectedList.appendChild(memberCard);
+    });
+}
+
+// Функция для удаления участника из выбранных
+function removeSelectedApplication(appId) {
+    const index = selectedApplications.indexOf(appId);
+    if (index !== -1) {
+        selectedApplications.splice(index, 1);
+        
+        const button = document.querySelector(`[data-application-id="${appId}"] .choose-request-add-btn`);
+        const element = document.querySelector(`[data-application-id="${appId}"]`);
+        
+        if (button) {
+            button.textContent = '+';
+            button.classList.remove('selected');
+        }
+        if (element) {
+            element.classList.remove('selected-application');
+        }
+        
+        updateSelectedMembers();
+        updateCreateButton();
+    }
+}
+
+// Функция выбора заявки
+function selectApplication(appId) {
+    const index = selectedApplications.indexOf(appId);
+    const button = document.querySelector(`[data-application-id="${appId}"] .choose-request-add-btn`);
+    const element = document.querySelector(`[data-application-id="${appId}"]`);
+    
+    if (index === -1) {
+        selectedApplications.push(appId);
+        if (button) {
+            button.textContent = '✓';
+            button.classList.add('selected');
+        }
+        if (element) {
+            element.classList.add('selected-application');
+        }
+    } else {
+        selectedApplications.splice(index, 1);
+        if (button) {
+            button.textContent = '+';
+            button.classList.remove('selected');
+        }
+        if (element) {
+            element.classList.remove('selected-application');
+        }
+    }
+    
+    updateSelectedMembers();
+    updateCreateButton();
+}
+
+// Функция обновления кнопки создания команды
+function updateCreateButton() {
+    const createBtn = document.getElementById('createTeamBtn');
+    if (selectedApplications.length > 0) {
+        createBtn.disabled = false;
+        createBtn.textContent = `Создать команду (выбрано: ${selectedApplications.length})`;
+    } else {
+        createBtn.disabled = true;
+        createBtn.textContent = 'Создать команду';
+    }
+}
+
+// Функции фильтрации
+function filterApplications() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const budgetMin = parseFloat(document.getElementById('budgetMin').value) || 0;
+    const budgetMax = parseFloat(document.getElementById('budgetMax').value) || Infinity;
+    
+    const applications = document.querySelectorAll('.choose-request-el');
+    let visibleCount = 0;
+    
+    applications.forEach(app => {
+        const organization = app.dataset.organization || '';
+        const author = app.dataset.author || '';
+        const budget = parseFloat(app.dataset.budget) || 0;
+        const skills = app.dataset.skills || '';
+        const solution = app.dataset.solution || '';
+        
+        // Поиск по тексту
+        const matchesSearch = searchTerm === '' || 
+            organization.includes(searchTerm) || 
+            author.includes(searchTerm) || 
+            solution.includes(searchTerm);
+        
+        // Фильтр по бюджету
+        const matchesBudget = budget >= budgetMin && budget <= budgetMax;
+        
+        // Фильтр по навыкам
+        let matchesSkills = true;
+        if (activeSkillFilters.length > 0) {
+            matchesSkills = activeSkillFilters.every(skill => 
+                skills.includes(skill.toLowerCase())
+            );
+        }
+        
+        const isVisible = matchesSearch && matchesBudget && matchesSkills;
+        
+        if (isVisible) {
+            app.style.display = 'block';
+            visibleCount++;
+        } else {
+            app.style.display = 'none';
+        }
+    });
+    
+    // Показываем сообщение, если нет результатов
+    const noResults = document.querySelector('.no-filter-results');
+    if (visibleCount === 0) {
+        if (!noResults) {
+            const message = document.createElement('div');
+            message.className = 'no-filter-results';
+            message.innerHTML = '<p>По вашему запросу ничего не найдено</p>';
+            document.getElementById('applicationsList').appendChild(message);
+        }
+    } else if (noResults) {
+        noResults.remove();
+    }
+}
+
+// Добавление навыка в фильтр
+function addSkillFilter(skill) {
+    if (!skill || activeSkillFilters.includes(skill)) return;
+    
+    activeSkillFilters.push(skill);
+    updateSkillTags();
+    filterApplications();
+}
+
+// Удаление навыка из фильтра
+function removeSkillFilter(skill) {
+    const index = activeSkillFilters.indexOf(skill);
+    if (index !== -1) {
+        activeSkillFilters.splice(index, 1);
+        updateSkillTags();
+        filterApplications();
+    }
+}
+
+// Обновление отображения тегов навыков
+function updateSkillTags() {
+    const container = document.getElementById('selectedSkills');
+    container.innerHTML = '';
+    
+    activeSkillFilters.forEach(skill => {
+        const template = document.getElementById('skillTagTemplate').content.cloneNode(true);
+        const tag = template.querySelector('.skill-filter-tag');
+        const text = template.querySelector('.tag-text');
+        const removeBtn = template.querySelector('.tag-remove');
+        
+        text.textContent = skill;
+        removeBtn.onclick = () => removeSkillFilter(skill);
+        
+        container.appendChild(tag);
+    });
+}
+
+// Сброс всех фильтров
+function resetFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('budgetMin').value = '';
+    document.getElementById('budgetMax').value = '';
+    document.getElementById('skillInput').value = '';
+    activeSkillFilters = [];
+    updateSkillTags();
+    filterApplications();
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    updateSelectedMembers();
+    
+    // Обработчик создания команды
+    document.getElementById('createTeamBtn').addEventListener('click', function() {
+        if (selectedApplications.length > 0) {
+            if (confirm('Создать команду из выбранных участников?')) {
+                console.log('Создание команды с участниками:', selectedApplications);
+                alert('Команда создана! Выбрано участников: ' + selectedApplications.length);
+            }
+        }
+    });
+    
+    // Обработчики фильтрации
+    document.getElementById('applyFilters').addEventListener('click', filterApplications);
+    document.getElementById('resetFilters').addEventListener('click', resetFilters);
+    
+    // Поиск при вводе (с задержкой)
+    let searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(filterApplications, 300);
+    });
+    
+    // Очистка поиска
+    document.getElementById('searchClear').addEventListener('click', function() {
+        document.getElementById('searchInput').value = '';
+        filterApplications();
+    });
+    
+    // Добавление навыка по Enter
+    document.getElementById('skillInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const skill = this.value.trim();
+            if (skill) {
+                addSkillFilter(skill);
+                this.value = '';
+            }
+        }
+    });
+    
+    // Сворачивание/разворачивание фильтра
+    document.getElementById('filterToggle').addEventListener('click', function() {
+        const content = document.getElementById('filterContent');
+        const isHidden = content.style.display === 'none';
+        content.style.display = isHidden ? 'block' : 'none';
+        this.textContent = isHidden ? '▼' : '▲';
+    });
+});
+</script>
 {% endblock %}

@@ -68,7 +68,7 @@
 
             .section-badge {
                 background: #e0e7ff;
-                color: #4f46e5;
+                color: #a7182d;
                 padding: 4px 12px;
                 border-radius: 20px;
                 font-size: 12px;
@@ -102,7 +102,7 @@
                 background: #fff;
 
                 &:focus {
-                    border-color: #667eea;
+                    border-color: #a7182d;
                     outline: none;
                     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
                 }
@@ -146,7 +146,7 @@
                 width: 18px;
                 height: 18px;
                 cursor: pointer;
-                accent-color: #667eea;
+                accent-color: #a7182d;
             }
 
             .checkbox-label {
@@ -169,7 +169,7 @@
                 transition: all 0.3s ease;
 
                 &:hover {
-                    border-color: #667eea;
+                    border-color: #a7182d;
                     box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
                 }
 
@@ -188,7 +188,7 @@
                         margin: 0;
 
                         .requirement-number {
-                            color: #667eea;
+                            color: #a7182d;
                             margin-left: 5px;
                         }
                     }
@@ -221,9 +221,9 @@
             width: 100%;
             padding: 15px;
             background: white;
-            border: 2px dashed #667eea;
+            border: 2px dashed #a7182d;
             border-radius: 10px;
-            color: #667eea;
+            color: #a7182d;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -239,7 +239,7 @@
             }
 
             &:hover {
-                background: #667eea;
+                background: #a7182d;
                 color: white;
                 border-style: solid;
             }
@@ -266,7 +266,7 @@
                 justify-content: center;
 
                 &-primary {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    background: linear-gradient(135deg, #a7182d 0%, #764ba2 100%);
                     color: white;
 
                     &:hover:not(:disabled) {
@@ -378,7 +378,7 @@
                     color: #e0e0e0;
 
                     &:focus {
-                        border-color: #667eea;
+                        border-color: #a7182d;
                     }
 
                     &::placeholder {
@@ -404,11 +404,11 @@
 
             .add-requirement-btn {
                 background: #2d2d2d;
-                border-color: #667eea;
-                color: #667eea;
+                border-color: #a7182d;
+                color: #a7182d;
 
                 &:hover {
-                    background: #667eea;
+                    background: #a7182d;
                     color: white;
                 }
             }

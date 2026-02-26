@@ -190,11 +190,15 @@ def profile(request):
         'user': request.user,
         'applications': applications,
     })
+
 @login_required
 def create_team(request):
+    applications = Application.objects.all().order_by('-created_at')
+    
     return render(request, 'createTeam.html', {
-        'title': 'Профиль',
+        'title': 'Создание команды',
         'user': request.user,
+        'applications': applications,
     })
 
 def form_page(request):
